@@ -21,11 +21,14 @@ class _MyHomePageState extends State<MyHomePage> {
   String email = "";
   String password = "";
   String token = "";
+  String adresseVille = "";
+  String nom = "";
+  String prenom = "";
 
   Map<String, dynamic> dataMap = new Map();
   bool recupDataBool = false;
 
-  // renvoie la requete préparé http en mode POST
+  // récupère le token
   Future<http.Response> verifToken(String email, String password) {
     return http.post(
       Uri.parse("http://s3-4393.nuage-peda.fr/mcdev/api/authentication_token"),
@@ -42,6 +45,10 @@ class _MyHomePageState extends State<MyHomePage> {
     if (reponse.statusCode == 200) {
       dataMap = convert.jsonDecode(reponse.body);
       token = dataMap['token'].toString();
+      adresseVille = dataMap['data']['adresse_Ville'].toString();
+      nom = dataMap['data']['nom'].toString();
+      prenom = dataMap['data']['prenom'].toString();
+
       recupDataBool = true;
     } else {
       print("erreur " + reponse.statusCode.toString());
@@ -100,7 +107,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (_formKey.currentState!.validate()) {
                       await recupDataJson();
                       if (recupDataBool) {
-                        profil = new Profil(email, token);
+                        profil =
+                            Profil(email, token, adresseVille, nom, prenom);
                         Navigator.pushNamed(context, '/affiche',
                             arguments: profil);
                         /* ScaffoldMessenger.of(context).showSnackBar(

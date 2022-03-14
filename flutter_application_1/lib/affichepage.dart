@@ -16,6 +16,7 @@ class AffichePage extends StatefulWidget {
 
 class _AffichePageState extends State<AffichePage> {
   Profil profil = Profil.vierge();
+  Map<String, dynamic> dataMap = new Map();
 
   Widget afficheData() {
     Column contenu = Column(
@@ -23,8 +24,15 @@ class _AffichePageState extends State<AffichePage> {
       children: List.empty(growable: true),
     );
 
-    contenu.children.add(Text("email: " + profil.getEmail().toString()));
-    contenu.children.add(Text("Token: " + profil.getToken().toString()));
+    contenu.children.add(Text("Votre nom: " + profil.getNom().toString()));
+    contenu.children
+        .add(Text("Votre prénom: " + profil.getPrenom().toString()));
+    contenu.children.add(Text("Votre email: " + profil.getEmail().toString()));
+    contenu.children
+        .add(Text("Votre ville: " + profil.getAdresseVille().toString()));
+
+    //contenu.children.add(Text("Token: " + profil.getToken().toString()));
+    print(profil.getToken());
 
     return contenu;
   }
