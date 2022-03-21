@@ -18,12 +18,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
   Profil profil = Profil.vierge();
+  String id = "";
   String email = "";
   String password = "";
   String token = "";
   String adresseVille = "";
+  String adresseRegion = "";
+  String adresseCP = "";
   String nom = "";
   String prenom = "";
+  late DateTime dateDeNaissance;
 
   Map<String, dynamic> dataMap = new Map();
   bool recupDataBool = false;
@@ -44,11 +48,15 @@ class _MyHomePageState extends State<MyHomePage> {
     http.Response reponse = await verifToken(email, password);
     if (reponse.statusCode == 200) {
       dataMap = convert.jsonDecode(reponse.body);
+      id = dataMap['data']['id'].toString();
       token = dataMap['token'].toString();
-      adresseVille = dataMap['data']['adresse_Ville'].toString();
+      adresseVille = dataMap['data']['adresse_ville'].toString();
+      adresseRegion = dataMap['data']['adresse_region'].toString();
+      adresseCP = dataMap['data']['adresse_CP'].toString();
       nom = dataMap['data']['nom'].toString();
       prenom = dataMap['data']['prenom'].toString();
-
+      dateDeNaissance = DateTime.parse(
+          dataMap['data']['date_de_naissance']['date'].toString());
       recupDataBool = true;
     } else {
       print("erreur " + reponse.statusCode.toString());
@@ -107,8 +115,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (_formKey.currentState!.validate()) {
                       await recupDataJson();
                       if (recupDataBool) {
-                        profil =
-                            Profil(email, token, adresseVille, nom, prenom);
+                        profil = Profil(
+                            id,
+                            email,
+                            token,
+                            nom,
+                            prenom,
+                            adresseRegion,
+                            adresseVille,
+                            adresseCP,
+                            dateDeNaissance);
                         Navigator.pushNamed(context, '/affiche',
                             arguments: profil);
                         /* ScaffoldMessenger.of(context).showSnackBar(

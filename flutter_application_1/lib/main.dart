@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'affichepage.dart';
 import 'myhomepage.dart';
+import 'profilpage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
         home: const MyHomePage(title: 'Connexion'),
         debugShowCheckedModeBanner: false,
         routes: <String, WidgetBuilder>{
-          '/affiche': (BuildContext context) => AffichePage(title: 'Affichage')
+          '/affiche': (BuildContext context) => AffichePage(title: 'Affichage'),
+          '/profil': (BuildContext context) => ProfilPage(title: 'Votre Profil')
         });
   }
 }
