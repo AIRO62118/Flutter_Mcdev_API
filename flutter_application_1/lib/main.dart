@@ -22,7 +22,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         routes: <String, WidgetBuilder>{
           '/affiche': (BuildContext context) => AffichePage(title: 'Affichage'),
-          '/profil': (BuildContext context) => ProfilPage(title: 'Votre Profil')
+          '/profil': (BuildContext context) =>
+              ProfilPage(title: 'Votre Profil'),
+          '/entreprise': (BuildContext context) =>
+              ProfilPage(title: 'Votre Entreprise')
         });
   }
 }

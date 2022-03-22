@@ -1,3 +1,5 @@
+import 'package:flutter_application_1/entreprise.dart';
+
 class Profil {
   // attributs
   String _id = "";
@@ -9,6 +11,8 @@ class Profil {
   String _adresseRegion = "";
   String _adresseCP = "";
   DateTime _dateDeNaissance = DateTime.now();
+  DateTime _dateInscription = DateTime.now();
+  Entreprise? patron;
 
   // constructeurs
   Profil(
@@ -20,7 +24,9 @@ class Profil {
       this._adresseRegion,
       this._adresseVille,
       this._adresseCP,
-      this._dateDeNaissance);
+      this._dateDeNaissance,
+      this._dateInscription,
+      {this.patron});
 
   Profil.vierge();
 
@@ -59,6 +65,10 @@ class Profil {
 
   DateTime getDateDeNaissance() {
     return _dateDeNaissance;
+  }
+
+  DateTime getDateInscription() {
+    return _dateInscription;
   }
 
   afficheAge() {

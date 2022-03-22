@@ -5,6 +5,8 @@ import 'package:flutter_application_1/profil.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
+import 'entreprise.dart';
+
 class AffichePage extends StatefulWidget {
   const AffichePage({Key? key, required this.title}) : super(key: key);
 
@@ -24,7 +26,9 @@ class _AffichePageState extends State<AffichePage> {
   String adresseCP = "";
   String nom = "";
   String prenom = "";
+  Entreprise? patron;
   late DateTime dateDeNaissance;
+  late DateTime dateInscription;
 
   Map<String, dynamic> dataMap = new Map();
   bool recupDataBool = false;
@@ -65,7 +69,20 @@ class _AffichePageState extends State<AffichePage> {
       adresseCP = dataMap['adresse_CP'].toString();
       nom = dataMap['nom'].toString();
       prenom = dataMap['prenom'].toString();
+      dateInscription = DateTime.parse(dataMap['date_inscription'].toString());
       dateDeNaissance = DateTime.parse(dataMap['date_de_naissance'].toString());
+      if (dataMap.containsKey('est_patron')) {
+        patron = Entreprise(
+            dataMap['est_patron']['id'].toString(),
+            dataMap['est_patron']['nom_entreprise'].toString(),
+            dataMap['est_patron']['description_entreprise'].toString(),
+            dataMap['est_patron']['adresse_ville_e'].toString(),
+            dataMap['est_patron']['adresse_region_e'].toString(),
+            dataMap['est_patron']['adresse_CPe'].toString(),
+            DateTime.parse(
+                dataMap['est_patron']['date_création_page'].toString()),
+            dataMap['est_patron']['interessers']);
+      }
       recupDataBool = true;
     } else {
       print("Probleme API GET user");
@@ -99,7 +116,8 @@ class _AffichePageState extends State<AffichePage> {
                       prenom,
                       adresseRegion,
                       adresseCP,
-                      dateDeNaissance);
+                      dateDeNaissance,
+                      dateInscription);
                   Navigator.pushNamed(context, '/profil', arguments: profil);
                 }
               },

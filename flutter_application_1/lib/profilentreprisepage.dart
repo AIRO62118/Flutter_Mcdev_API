@@ -3,17 +3,19 @@ import 'package:flutter_application_1/profil.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
-class ProfilPage extends StatefulWidget {
-  const ProfilPage({Key? key, required this.title}) : super(key: key);
+import 'entreprise.dart';
+
+class ProfilEntreprisePage extends StatefulWidget {
+  const ProfilEntreprisePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<ProfilPage> createState() => _ProfilPageState();
+  State<ProfilEntreprisePage> createState() => _ProfilEntreprisePageState();
 }
 
-class _ProfilPageState extends State<ProfilPage> {
-  Profil profil = Profil.vierge();
+class _ProfilEntreprisePageState extends State<ProfilEntreprisePage> {
+  Entreprise entreprise = Entreprise.vierge();
   bool recupDataBool = false;
 
   Map<String, dynamic> dataMap = new Map();
@@ -47,32 +49,10 @@ class _ProfilPageState extends State<ProfilPage> {
     return contenu;
   }
 
-  Widget boutonEntreprise() {
-    ElevatedButton button = ElevatedButton(
-        onPressed: () async {
-          await afficheProfil(profil.getId(), profil.getToken());
-          if (recupDataBool) {
-            profil = Profil(
-                profil.getId(),
-                profil.getEmail(),
-                profil.getToken(),
-                adresseVille,
-                nom,
-                prenom,
-                adresseRegion,
-                adresseCP,
-                dateDeNaissance,
-                dateInscription);
-            Navigator.pushNamed(context, '/entreprise', arguments: entreprise);
-          }
-        },
-        child: Text("Voir votre profil"));
-  }
-
   @override
   Widget build(BuildContext context) {
     // recup l'argument profil
-    profil = ModalRoute.of(context)?.settings.arguments as Profil;
+    entreprise = ModalRoute.of(context)?.settings.arguments as Entreprise;
 
     return Scaffold(
       appBar: AppBar(

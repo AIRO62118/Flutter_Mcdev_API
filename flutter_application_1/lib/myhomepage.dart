@@ -28,6 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String nom = "";
   String prenom = "";
   late DateTime dateDeNaissance;
+  DateTime dateInscription = DateTime.now();
 
   Map<String, dynamic> dataMap = new Map();
   bool recupDataBool = false;
@@ -124,7 +125,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             adresseRegion,
                             adresseVille,
                             adresseCP,
-                            dateDeNaissance);
+                            dateDeNaissance,
+                            dateInscription);
                         Navigator.pushNamed(context, '/affiche',
                             arguments: profil);
                         /* ScaffoldMessenger.of(context).showSnackBar(
