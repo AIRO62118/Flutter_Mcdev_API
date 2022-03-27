@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/profil.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+
+import 'entreprise.dart';
 
 class ProfilPage extends StatefulWidget {
   const ProfilPage({Key? key, required this.title}) : super(key: key);
@@ -13,10 +17,42 @@ class ProfilPage extends StatefulWidget {
 }
 
 class _ProfilPageState extends State<ProfilPage> {
+  Entreprise entreprise = Entreprise.vierge();
   Profil profil = Profil.vierge();
-  bool recupDataBool = false;
 
+  String id = "";
+  String nom = "";
+  String description = "";
+  String adresseVille = "";
+  String adresseRegion = "";
+  String adresseCP = "";
+  late DateTime dateCreationPage;
+
+  bool recupDataBool = false;
   Map<String, dynamic> dataMap = new Map();
+
+  Future<void> afficheProfilEntreprise(String id, String token) async {
+    String url = "http://s3-4393.nuage-peda.fr/mcdev/api/entreprises/" + id;
+    var reponse = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ' + token,
+      },
+    );
+    if (reponse.statusCode == 200) {
+      dataMap = convert.jsonDecode(reponse.body);
+      print(dataMap);
+      id = dataMap['id'].toString();
+      nom = dataMap['nom_entreprise'].toString();
+      description = dataMap['description_entreprise'].toString();
+      adresseVille = dataMap['adresse_ville_e'].toString();
+      adresseRegion = dataMap['adresse_region_e'].toString();
+      adresseCP = dataMap['adresse_CPe'].toString();
+      dateCreationPage =
+          DateTime.parse(dataMap['date_création_page'].toString());
+    }
+  }
 
   Widget afficheData() {
     Column contenu = Column(
@@ -50,23 +86,22 @@ class _ProfilPageState extends State<ProfilPage> {
   Widget boutonEntreprise() {
     ElevatedButton button = ElevatedButton(
         onPressed: () async {
-          await afficheProfil(profil.getId(), profil.getToken());
+          await afficheProfilEntreprise(entreprise.getId(), profil.getToken());
           if (recupDataBool) {
-            profil = Profil(
-                profil.getId(),
-                profil.getEmail(),
-                profil.getToken(),
-                adresseVille,
-                nom,
-                prenom,
-                adresseRegion,
-                adresseCP,
-                dateDeNaissance,
-                dateInscription);
+            entreprise = Entreprise(
+                entreprise.getId(),
+                entreprise.getNom(),
+                entreprise.getDescription(),
+                entreprise.getAdresseRegion(),
+                entreprise.getAdresseVille(),
+                entreprise.getAdresseCP(),
+                entreprise.getDateCreationPage(),
+                entreprise.getFavori());
             Navigator.pushNamed(context, '/entreprise', arguments: entreprise);
           }
         },
-        child: Text("Voir votre profil"));
+        child: Text("Voir votre entreprise"));
+    return button;
   }
 
   @override
@@ -81,7 +116,7 @@ class _ProfilPageState extends State<ProfilPage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [afficheData()],
+          children: [afficheData(), boutonEntreprise()],
         ),
       ),
     );

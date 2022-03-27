@@ -26,25 +26,9 @@ class _ProfilEntreprisePageState extends State<ProfilEntreprisePage> {
       children: List.empty(growable: true),
     );
 
-    contenu.children.add(Text("Bonjour " +
-        profil.getPrenom().toString() +
-        " " +
-        profil.getNom().toString() +
-        ", " +
-        profil.afficheAge().toString() +
-        " ans"));
-
-    contenu.children.add(Text(profil.getEmail().toString()));
-    contenu.children.add(
-        Text("Devenu membre le :" + profil.getDateInscription().toString()));
-    contenu.children.add(Text(profil.getAdresseRegion() +
-        ", " +
-        profil.getAdresseVille().toString() +
-        ", " +
-        profil.getAdresseCP().toString()));
+    contenu.children.add(Text(entreprise.getNom().toString()));
 
     //contenu.children.add(Text("Token: " + profil.getToken().toString()));
-    print(profil.getToken());
 
     return contenu;
   }

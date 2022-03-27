@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'affichepage.dart';
 import 'myhomepage.dart';
 import 'profilpage.dart';
+import 'profilentreprisepage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
           '/profil': (BuildContext context) =>
               ProfilPage(title: 'Votre Profil'),
           '/entreprise': (BuildContext context) =>
-              ProfilPage(title: 'Votre Entreprise')
+              ProfilEntreprisePage(title: 'Votre Entreprise')
         });
   }
 }
