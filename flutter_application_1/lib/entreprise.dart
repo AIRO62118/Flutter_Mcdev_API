@@ -24,27 +24,27 @@ class Entreprise {
 
   //Getter et Setter
 
-  String getId() {
+  String getIdEntreprise() {
     return _id;
   }
 
-  String getNom() {
+  String getNomEntreprise() {
     return _nom;
   }
 
-  String getDescription() {
+  String getDescriptionEntreprise() {
     return _description;
   }
 
-  String getAdresseVille() {
+  String getAdresseVilleEntreprise() {
     return _adresseVille;
   }
 
-  String getAdresseRegion() {
+  String getAdresseRegionEntreprise() {
     return _adresseRegion;
   }
 
-  String getAdresseCP() {
+  String getAdresseCPEntreprise() {
     return _adresseCP;
   }
 
@@ -55,4 +55,13 @@ class Entreprise {
   List getFavori() {
     return _misEnFavori;
   }
+
+  set setId(String value) => this._id = value;
+  set setNom(value) => this._nom = value;
+  set setDescription(value) => this._description = value;
+  set setAdresseVille(value) => this._adresseVille = value;
+  set setAdresseRegion(value) => this._adresseRegion = value;
+  set setAdresseCP(value) => this._adresseCP = value;
+  set setDateCreationPage(value) => this._dateCreationPage = value;
+  set setMisEnFavori(value) => this._misEnFavori = value;
 }

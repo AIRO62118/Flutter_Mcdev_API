@@ -12,7 +12,7 @@ class Profil {
   String _adresseCP = "";
   DateTime _dateDeNaissance = DateTime.now();
   DateTime _dateInscription = DateTime.now();
-  Entreprise? patron;
+  Entreprise _patron = Entreprise.vierge();
 
   // constructeurs
   Profil(
@@ -26,7 +26,19 @@ class Profil {
       this._adresseCP,
       this._dateDeNaissance,
       this._dateInscription,
-      {this.patron});
+      this._patron);
+
+  Profil.noPatron(
+      this._id,
+      this._email,
+      this._token,
+      this._nom,
+      this._prenom,
+      this._adresseRegion,
+      this._adresseVille,
+      this._adresseCP,
+      this._dateDeNaissance,
+      this._dateInscription);
 
   Profil.vierge();
 
@@ -69,6 +81,14 @@ class Profil {
 
   DateTime getDateInscription() {
     return _dateInscription;
+  }
+
+  Entreprise getEntreprise() {
+    return _patron;
+  }
+
+  void setEntreprise(Entreprise entreprise) {
+    this._patron = entreprise;
   }
 
   afficheAge() {

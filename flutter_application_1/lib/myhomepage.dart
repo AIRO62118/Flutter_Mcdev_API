@@ -27,6 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String adresseCP = "";
   String nom = "";
   String prenom = "";
+
   late DateTime dateDeNaissance;
   DateTime dateInscription = DateTime.now();
 
@@ -116,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (_formKey.currentState!.validate()) {
                       await recupDataJson();
                       if (recupDataBool) {
-                        profil = Profil(
+                        profil = Profil.noPatron(
                             id,
                             email,
                             token,
@@ -127,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             adresseCP,
                             dateDeNaissance,
                             dateInscription);
-                        Navigator.pushNamed(context, '/affiche',
+                        Navigator.popAndPushNamed(context, '/affiche',
                             arguments: profil);
                         /* ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(profil.toString())),

@@ -1,5 +1,7 @@
 // ignore_for_file: unused_import
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/profil.dart';
 import 'package:http/http.dart' as http;
@@ -26,7 +28,7 @@ class _AffichePageState extends State<AffichePage> {
   String adresseCP = "";
   String nom = "";
   String prenom = "";
-  Entreprise? patron;
+  Entreprise patron = Entreprise.vierge();
   late DateTime dateDeNaissance;
   late DateTime dateInscription;
 
@@ -82,10 +84,11 @@ class _AffichePageState extends State<AffichePage> {
             DateTime.parse(
                 dataMap['est_patron']['date_création_page'].toString()),
             dataMap['est_patron']['interessers']);
+        inspect(patron);
       }
       recupDataBool = true;
     } else {
-      print("Probleme API GET user");
+      print(reponse.statusCode);
     }
   }
 
@@ -111,13 +114,14 @@ class _AffichePageState extends State<AffichePage> {
                       profil.getId(),
                       profil.getEmail(),
                       profil.getToken(),
-                      adresseVille,
                       nom,
                       prenom,
                       adresseRegion,
+                      adresseVille,
                       adresseCP,
                       dateDeNaissance,
-                      dateInscription);
+                      dateInscription,
+                      patron);
                   Navigator.pushNamed(context, '/profil', arguments: profil);
                 }
               },

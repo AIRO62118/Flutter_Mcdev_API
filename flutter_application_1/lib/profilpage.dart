@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -17,18 +19,21 @@ class ProfilPage extends StatefulWidget {
 }
 
 class _ProfilPageState extends State<ProfilPage> {
-  Entreprise entreprise = Entreprise.vierge();
   Profil profil = Profil.vierge();
-
-  String id = "";
+  Entreprise entreprise = Entreprise.vierge();
+/*
+   String id = "";
   String nom = "";
   String description = "";
   String adresseVille = "";
   String adresseRegion = "";
   String adresseCP = "";
   late DateTime dateCreationPage;
+  late List misEnFavoris = [];
+ */
 
   bool recupDataBool = false;
+  bool afficheEntreprise = false;
   Map<String, dynamic> dataMap = new Map();
 
   Future<void> afficheProfilEntreprise(String id, String token) async {
@@ -44,13 +49,17 @@ class _ProfilPageState extends State<ProfilPage> {
       dataMap = convert.jsonDecode(reponse.body);
       print(dataMap);
       id = dataMap['id'].toString();
-      nom = dataMap['nom_entreprise'].toString();
-      description = dataMap['description_entreprise'].toString();
-      adresseVille = dataMap['adresse_ville_e'].toString();
-      adresseRegion = dataMap['adresse_region_e'].toString();
-      adresseCP = dataMap['adresse_CPe'].toString();
-      dateCreationPage =
+      entreprise.setNom = dataMap['nom_entreprise'].toString();
+      entreprise.setDescription = dataMap['description_entreprise'].toString();
+      entreprise.setAdresseVille = dataMap['adresse_ville_e'].toString();
+      entreprise.setAdresseRegion = dataMap['adresse_region_e'].toString();
+      entreprise.setAdresseCP = dataMap['adresse_CPe'].toString();
+      entreprise.setDateCreationPage =
           DateTime.parse(dataMap['date_création_page'].toString());
+      entreprise.setMisEnFavori = dataMap['interessers'];
+      recupDataBool = true;
+    } else {
+      print(reponse.statusCode);
     }
   }
 
@@ -77,30 +86,35 @@ class _ProfilPageState extends State<ProfilPage> {
         ", " +
         profil.getAdresseCP().toString()));
 
-    //contenu.children.add(Text("Token: " + profil.getToken().toString()));
     print(profil.getToken());
 
     return contenu;
   }
 
+  verifEntreprise() async {
+    print('le debug');
+    print('le debug 2');
+    await afficheProfilEntreprise(
+        entreprise.getIdEntreprise(), profil.getToken());
+    if (recupDataBool) {
+      print('le debug 3');
+      entreprise = Entreprise(
+          entreprise.getIdEntreprise(),
+          entreprise.getNomEntreprise(),
+          entreprise.getDescriptionEntreprise(),
+          entreprise.getAdresseVilleEntreprise(),
+          entreprise.getAdresseRegionEntreprise(),
+          entreprise.getAdresseCPEntreprise(),
+          entreprise.getDateCreationPage(),
+          entreprise.getFavori());
+      Navigator.pushNamed(context, '/entreprise', arguments: entreprise);
+    }
+  }
+
   Widget boutonEntreprise() {
     ElevatedButton button = ElevatedButton(
-        onPressed: () async {
-          await afficheProfilEntreprise(entreprise.getId(), profil.getToken());
-          if (recupDataBool) {
-            entreprise = Entreprise(
-                entreprise.getId(),
-                entreprise.getNom(),
-                entreprise.getDescription(),
-                entreprise.getAdresseRegion(),
-                entreprise.getAdresseVille(),
-                entreprise.getAdresseCP(),
-                entreprise.getDateCreationPage(),
-                entreprise.getFavori());
-            Navigator.pushNamed(context, '/entreprise', arguments: entreprise);
-          }
-        },
-        child: Text("Voir votre entreprise"));
+        onPressed: afficheEntreprise ? verifEntreprise : null,
+        child: afficheEntreprise ? Text("Voir votre entreprise") : null);
     return button;
   }
 
@@ -108,6 +122,14 @@ class _ProfilPageState extends State<ProfilPage> {
   Widget build(BuildContext context) {
     // recup l'argument profil
     profil = ModalRoute.of(context)?.settings.arguments as Profil;
+
+    if (profil.getEntreprise().getIdEntreprise() != "") {
+      entreprise = profil.getEntreprise();
+      setState(() {
+        afficheEntreprise = true;
+      });
+    }
+    //entreprise = profil.patron;
 
     return Scaffold(
       appBar: AppBar(

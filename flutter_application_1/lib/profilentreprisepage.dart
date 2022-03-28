@@ -16,6 +16,7 @@ class ProfilEntreprisePage extends StatefulWidget {
 
 class _ProfilEntreprisePageState extends State<ProfilEntreprisePage> {
   Entreprise entreprise = Entreprise.vierge();
+  Profil profil = Profil.vierge();
   bool recupDataBool = false;
 
   Map<String, dynamic> dataMap = new Map();
@@ -26,7 +27,7 @@ class _ProfilEntreprisePageState extends State<ProfilEntreprisePage> {
       children: List.empty(growable: true),
     );
 
-    contenu.children.add(Text(entreprise.getNom().toString()));
+    contenu.children.add(Text(entreprise.getNomEntreprise().toString()));
 
     //contenu.children.add(Text("Token: " + profil.getToken().toString()));
 
